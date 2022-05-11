@@ -1,4 +1,6 @@
 using Basket_Store_MS.Data;
+using Basket_Store_MS.Models.Interface;
+using Basket_Store_MS.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +31,10 @@ namespace Basket_Store_MS
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
+            services.AddTransient<ICategory, CategoryServiece>();
+
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

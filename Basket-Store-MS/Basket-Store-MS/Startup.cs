@@ -1,3 +1,4 @@
+
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models.Interface;
 using Basket_Store_MS.Models.Services;
@@ -31,6 +32,7 @@ namespace Basket_Store_MS
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
+            services.AddTransient<IPaymentType,PaymentTypeServices>();
             services.AddTransient<IFeedBack, FeedBackServices>();
             services.AddControllers();
         }
@@ -56,3 +58,4 @@ namespace Basket_Store_MS
         }
     }
 }
+

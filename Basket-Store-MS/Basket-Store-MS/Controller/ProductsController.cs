@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
-using Basket_Store_MS.Models.Interface;
 
 namespace Basket_Store_MS.Controller
 {
@@ -15,25 +15,25 @@ namespace Basket_Store_MS.Controller
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProuduct _prouduct;
+        private readonly BasketStoreDBContext _context;
 
-        public ProductsController(IProuduct prouduct)
+        public ProductsController(BasketStoreDBContext context)
         {
-            _prouduct = prouduct;
+            _context = context;
         }
 
         // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
         {
-            return await _prouduct.GetProducts();
+            return await _context.Products.ToListAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Products>> GetProducts(int id)
         {
-            var products = await _prouduct.GetProduct(id);
+            var products = await _context.Products.FindAsync(id);
 
             if (products == null)
             {
@@ -52,9 +52,26 @@ namespace Basket_Store_MS.Controller
             {
                 return BadRequest();
             }
-            var modifiedproduct = await _prouduct.UpdateProduct(id, products);
 
-            return Ok(modifiedproduct);
+            _context.Entry(products).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductsExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // POST: api/Products
@@ -62,25 +79,31 @@ namespace Basket_Store_MS.Controller
         [HttpPost]
         public async Task<ActionResult<Products>> PostProducts(Products products)
         {
-            var Product = await _prouduct.Create(products);
+            _context.Products.Add(products);
+            await _context.SaveChangesAsync();
 
-            return Ok(Product);
-
+            return CreatedAtAction("GetProducts", new { id = products.Id }, products);
         }
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProducts(int id)
         {
-             await _prouduct.Delete(id);
-           
+            var products = await _context.Products.FindAsync(id);
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(products);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        //private bool ProductsExists(int id)
-        //{
-        //    return _context.Products.Any(e => e.Id == id);
-        //}
+        private bool ProductsExists(int id)
+        {
+            return _context.Products.Any(e => e.Id == id);
+        }
     }
 }

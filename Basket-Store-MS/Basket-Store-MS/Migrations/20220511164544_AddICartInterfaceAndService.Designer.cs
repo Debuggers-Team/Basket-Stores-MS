@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basket_Store_MS.Migrations
 {
     [DbContext(typeof(BasketStoreDBContext))]
-    [Migration("20220511131416_add-data")]
-    partial class adddata
+    [Migration("20220511164544_AddICartInterfaceAndService")]
+    partial class AddICartInterfaceAndService
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

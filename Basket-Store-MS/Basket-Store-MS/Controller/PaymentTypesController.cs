@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
+using Basket_Store_MS.Models.Interface;
 
 namespace Basket_Store_MS.Controller
 {
@@ -14,32 +15,34 @@ namespace Basket_Store_MS.Controller
     [ApiController]
     public class PaymentTypesController : ControllerBase
     {
-        private readonly BasketStoreDBContext _context;
+        private readonly IPaymentType _payment;
 
-        public PaymentTypesController(BasketStoreDBContext context)
+        public PaymentTypesController(IPaymentType payment)
         {
-            _context = context;
+            _payment = payment;
         }
 
         // GET: api/PaymentTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaymentType>>> GetPaymentTypes()
         {
-            return await _context.PaymentTypes.ToListAsync();
+            var paymentType = await _payment.GetPaymentTypes();
+
+            return Ok(paymentType);
         }
 
         // GET: api/PaymentTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentType>> GetPaymentType(int id)
         {
-            var paymentType = await _context.PaymentTypes.FindAsync(id);
+            var paymentType = await _payment.GetPaymentType(id);
 
             if (paymentType == null)
             {
                 return NotFound();
             }
 
-            return paymentType;
+            return Ok(paymentType);
         }
 
         // PUT: api/PaymentTypes/5
@@ -52,25 +55,9 @@ namespace Basket_Store_MS.Controller
                 return BadRequest();
             }
 
-            _context.Entry(paymentType).State = EntityState.Modified;
+            PaymentType modifiedPaymentType = await _payment.UpdatePaymentType(id,paymentType);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaymentTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(modifiedPaymentType);
         }
 
         // POST: api/PaymentTypes
@@ -78,31 +65,18 @@ namespace Basket_Store_MS.Controller
         [HttpPost]
         public async Task<ActionResult<PaymentType>> PostPaymentType(PaymentType paymentType)
         {
-            _context.PaymentTypes.Add(paymentType);
-            await _context.SaveChangesAsync();
+            var newPaymentType = await _payment.Create(paymentType);
 
-            return CreatedAtAction("GetPaymentType", new { id = paymentType.Id }, paymentType);
+            return Ok(newPaymentType);
         }
 
         // DELETE: api/PaymentTypes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaymentType(int id)
         {
-            var paymentType = await _context.PaymentTypes.FindAsync(id);
-            if (paymentType == null)
-            {
-                return NotFound();
-            }
-
-            _context.PaymentTypes.Remove(paymentType);
-            await _context.SaveChangesAsync();
+             await _payment.DeletePaymentType(id);
 
             return NoContent();
-        }
-
-        private bool PaymentTypeExists(int id)
-        {
-            return _context.PaymentTypes.Any(e => e.Id == id);
         }
     }
 }

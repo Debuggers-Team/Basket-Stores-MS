@@ -2,7 +2,7 @@
 
 namespace Basket_Store_MS.Migrations
 {
-    public partial class adddatabase : Migration
+    public partial class AddICartInterfaceAndService : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

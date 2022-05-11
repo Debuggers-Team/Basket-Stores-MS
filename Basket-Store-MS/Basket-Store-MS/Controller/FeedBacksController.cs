@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
+using Basket_Store_MS.Models.Interface;
 
 namespace Basket_Store_MS.Controller
 {
@@ -14,32 +16,27 @@ namespace Basket_Store_MS.Controller
     [ApiController]
     public class FeedBacksController : ControllerBase
     {
-        private readonly BasketStoreDBContext _context;
+        private readonly IFeedBack _feedback;
 
-        public FeedBacksController(BasketStoreDBContext context)
+        public FeedBacksController(IFeedBack feedback)
         {
-            _context = context;
+            _feedback = feedback;
         }
 
         // GET: api/FeedBacks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FeedBack>>> GetFeedBacks()
         {
-            return await _context.FeedBacks.ToListAsync();
+            var feedback = await _feedback.GetFeedBacks();
+            return Ok(feedback);
         }
 
         // GET: api/FeedBacks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FeedBack>> GetFeedBack(int id)
         {
-            var feedBack = await _context.FeedBacks.FindAsync(id);
-
-            if (feedBack == null)
-            {
-                return NotFound();
-            }
-
-            return feedBack;
+            FeedBack feedback = await _feedback.GetFeedBack(id);
+            return Ok(feedback);
         }
 
         // PUT: api/FeedBacks/5
@@ -52,25 +49,9 @@ namespace Basket_Store_MS.Controller
                 return BadRequest();
             }
 
-            _context.Entry(feedBack).State = EntityState.Modified;
+            var modifiedFeedBack = await _feedback.UpdateFeedBack(id, feedBack);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FeedBackExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(modifiedFeedBack);
         }
 
         // POST: api/FeedBacks
@@ -78,31 +59,20 @@ namespace Basket_Store_MS.Controller
         [HttpPost]
         public async Task<ActionResult<FeedBack>> PostFeedBack(FeedBack feedBack)
         {
-            _context.FeedBacks.Add(feedBack);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFeedBack", new { id = feedBack.Id }, feedBack);
+            FeedBack newFeedBack = await _feedback.Create(feedBack);
+            return Ok(newFeedBack);
         }
 
         // DELETE: api/FeedBacks/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFeedBack(int id)
         {
-            var feedBack = await _context.FeedBacks.FindAsync(id);
-            if (feedBack == null)
-            {
-                return NotFound();
-            }
-
-            _context.FeedBacks.Remove(feedBack);
-            await _context.SaveChangesAsync();
+            await _feedback.Delete(id);
 
             return NoContent();
         }
 
-        private bool FeedBackExists(int id)
-        {
-            return _context.FeedBacks.Any(e => e.Id == id);
-        }
+       
     }
 }
+

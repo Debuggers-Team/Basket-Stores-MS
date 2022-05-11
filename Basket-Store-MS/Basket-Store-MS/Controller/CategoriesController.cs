@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
+using Basket_Store_MS.Models.Interface;
 
 namespace Basket_Store_MS.Controller
 {
@@ -14,32 +15,27 @@ namespace Basket_Store_MS.Controller
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly BasketStoreDBContext _context;
+        private readonly ICategory _category;
 
-        public CategoriesController(BasketStoreDBContext context)
+        public CategoriesController(ICategory category)
         {
-            _context = context;
+            _category = category;
         }
 
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            var categories = await _category.GetCategories();
+            return Ok(categories);
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return category;
+            Category category = await _category.GetCategory(id);
+            return Ok(category);
         }
 
         // PUT: api/Categories/5
@@ -47,30 +43,13 @@ namespace Basket_Store_MS.Controller
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
+
             if (id != category.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var modifiedCategory = await _category.UpdateCategory(id, category);
+            return Ok(modifiedCategory);
         }
 
         // POST: api/Categories
@@ -78,31 +57,17 @@ namespace Basket_Store_MS.Controller
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            Category newCategory = await _category.Create(category);
+            return Ok(newCategory);
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
+            await _category.Delete(id);
+            return NoContent() ;
         }
     }
 }

@@ -31,10 +31,9 @@ namespace Basket_Store_MS
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
-            services.AddTransient<ICategory, CategoryServiece>();
+            services.AddTransient<IPaymentType,PaymentTypeServices>();
 
             services.AddControllers();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

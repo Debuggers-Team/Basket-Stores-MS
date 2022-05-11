@@ -1,4 +1,5 @@
 
+
 using Basket_Store_MS.Data;
 
 using Basket_Store_MS.Models.Interface;
@@ -38,6 +39,11 @@ namespace Basket_Store_MS
          services.AddTransient<ICart, CartService>();
             services.AddTransient<IPaymentType,PaymentTypeServices>();
             services.AddTransient<IFeedBack, FeedBackServices>();
+            services.AddTransient<IProuduct, ProuductRepo>();
+            services.AddTransient<ICategory, CategoryServiece>();
+
+
+
 
             services.AddControllers();
         }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
+using Basket_Store_MS.Models.Interface;
 
 namespace Basket_Store_MS.Controller
 {
@@ -14,32 +15,28 @@ namespace Basket_Store_MS.Controller
     [ApiController]
     public class CartsController : ControllerBase
     {
-        private readonly BasketStoreDBContext _context;
 
-        public CartsController(BasketStoreDBContext context)
+        private readonly ICart _cart;
+
+        public CartsController(ICart cart)
         {
-            _context = context;
+            _cart = cart;
         }
 
         // GET: api/Carts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cart>>> GetCarts()
         {
-            return await _context.Carts.ToListAsync();
+            var cart = await _cart.GetCarts();
+            return Ok(cart);
         }
 
         // GET: api/Carts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cart>> GetCart(int id)
         {
-            var cart = await _context.Carts.FindAsync(id);
-
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            return cart;
+            Cart cart = await _cart.GetCart(id);
+            return Ok(cart);
         }
 
         // PUT: api/Carts/5
@@ -51,26 +48,8 @@ namespace Basket_Store_MS.Controller
             {
                 return BadRequest();
             }
-
-            _context.Entry(cart).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CartExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var modifiedCart= await _cart.UpdateCart(id, cart);
+            return Ok(modifiedCart);
         }
 
         // POST: api/Carts
@@ -78,31 +57,21 @@ namespace Basket_Store_MS.Controller
         [HttpPost]
         public async Task<ActionResult<Cart>> PostCart(Cart cart)
         {
-            _context.Carts.Add(cart);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCart", new { id = cart.Id }, cart);
+            Cart newCart = await _cart.Create(cart);
+            return Ok(newCart);
         }
 
         // DELETE: api/Carts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCart(int id)
         {
-            var cart = await _context.Carts.FindAsync(id);
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            _context.Carts.Remove(cart);
-            await _context.SaveChangesAsync();
-
+            await _cart.Delete(id);
             return NoContent();
         }
 
-        private bool CartExists(int id)
-        {
-            return _context.Carts.Any(e => e.Id == id);
-        }
+        //private bool CartExists(int id)
+        //{
+        //    return _context.Carts.Any(e => e.Id == id);
+        //}
     }
 }

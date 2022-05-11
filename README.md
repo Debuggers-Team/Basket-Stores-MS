@@ -60,7 +60,7 @@ Estimated Time : 1 Day
 
 Basket ER digram 
 
-![Basket ER digram](./img/BasketERdigram.png)
+![Basket ER digram](./img/NewERDAfterEditing.png)
 
 Product Table: 
 

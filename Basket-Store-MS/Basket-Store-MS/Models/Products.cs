@@ -1,4 +1,7 @@
-﻿namespace Basket_Store_MS.Models
+﻿
+using System.Collections.Generic;
+
+namespace Basket_Store_MS.Models
 {
     public class Products
     {
@@ -8,5 +11,8 @@
         public int InStock { get; set; }
         public string ProductDescription { get; set; }
         public bool Discount { get; set; }
+
+        public List<FeedBack> feedBack { get; set; }
+
     }
 }

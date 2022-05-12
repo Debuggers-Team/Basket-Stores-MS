@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Basket_Store_MS.Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,11 +8,14 @@ namespace Basket_Store_MS.Models.Interface
 {
     public interface IProuduct
     {
-        Task<Products> Create(Products products);
-        Task<List<Products>> GetProducts();
-        Task<Products> GetProduct(int Id);
-        Task<Products> UpdateProduct(int Id, Products products);
+        Task<ProductDto> Create(ProductDto products);
+        Task<List<ProductDto>> GetProducts();
+        Task<ProductDto> GetProduct(int Id);
+        Task<ProductDto> UpdateProduct(int Id, ProductDto products);
         Task Delete(int id);
-      }
+        public Task AddFeedBackToProduct(int ProductId, int FeedBackId);
+
+        public Task RemoveFeedBackFromProduct(int ProductId, int FeedBackId);
+    }
 }
 

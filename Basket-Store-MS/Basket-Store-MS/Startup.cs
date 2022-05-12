@@ -41,6 +41,9 @@ namespace Basket_Store_MS
             services.AddTransient<IFeedBack, FeedBackServices>();
             services.AddTransient<IProuduct, ProuductRepo>();
             services.AddTransient<ICategory, CategoryServiece>();
+            services.AddControllers()
+                   .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using Basket_Store_MS.Data;
+using Basket_Store_MS.Models.DTO;
 using Basket_Store_MS.Models.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,7 +18,21 @@ namespace Basket_Store_MS.Models.Services
             {
                 _context = context;
             }
-            public async Task<Products> Create(Products products)
+
+        public async Task AddFeedBackToProduct(int productId, int feedBackId)
+        {
+            ProductFeedBack productFeedBack = new ProductFeedBack()
+            {
+                ProductId = productId,
+                FeedBackId = feedBackId
+            };
+            _context.Entry(productFeedBack).State = EntityState.Added;
+
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task<ProductDto> Create(ProductDto products)
         {
             _context.Entry(products).State = EntityState.Added;
             await _context.SaveChangesAsync();
@@ -26,28 +41,45 @@ namespace Basket_Store_MS.Models.Services
 
         public async Task Delete(int id)
         {
-            Products products = await GetProduct(id);
-            _context.Entry(products).State = EntityState.Deleted;
+            Products product = await _context.Products.FindAsync(id);
+                _context.Entry(product).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
+
         }
 
-        public async Task<Products> GetProduct(int Id)
+        public async Task <ProductDto> GetProduct(int Id)
         {
-            Products product = await _context.Products.FindAsync(Id);
-            return product;     
-         }
-
-        public async Task<List<Products>> GetProducts()
-        {
-            var products = await _context.Products.ToListAsync();
-            return products;
+            return await _context.Products.Select(X => new ProductDto
+            {
+                Id = X.Id,
+                Name = X.Name,
+                Price = X.Price,
+                ProductDescription = X.ProductDescription,
+                Discount = X.Discount,
+                feedBacks = X.feedBack
+                             .Select(Y => new FeedBack
+                             {
+                                 Id = Y.Id,
+                                 FeedBackDescription = Y.FeedBackDescription,
+                                 Rating = Y.Rating
+                                 
+                             }).ToList()
+            }).FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<Products> UpdateProduct(int Id, Products products)
+        public Task<List<ProductDto>> GetProducts()
         {
-            _context.Entry(products).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return products;
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFeedBackFromProduct(int ProductId, int FeedBackId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ProductDto> UpdateProduct(int Id, ProductDto products)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -42,6 +42,11 @@ namespace Basket_Store_MS.Data
             new Products { Id = 2, Name = "Trousers", Price = 20, InStock = 100, ProductDescription = "Test2", Discount = false }
 
      );
+            modelBuilder.Entity<ProductFeedBack>().HasKey(
+                // new object , this object will be the PK
+                productfeedBack => new { productfeedBack.ProductId, productfeedBack.FeedBackId } // define composit key, marked as primary key
+                );
+
         }
 
     }

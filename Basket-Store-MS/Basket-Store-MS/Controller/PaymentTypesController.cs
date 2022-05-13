@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
 using Basket_Store_MS.Models.Interface;
+using Basket_Store_MS.Models.DTO;
 
 namespace Basket_Store_MS.Controller
 {
@@ -48,14 +49,14 @@ namespace Basket_Store_MS.Controller
         // PUT: api/PaymentTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPaymentType(int id, PaymentType paymentType)
+        public async Task<IActionResult> PutPaymentType(int id, PaymentTypeDto paymentType)
         {
             if (id != paymentType.Id)
             {
                 return BadRequest();
             }
 
-            PaymentType modifiedPaymentType = await _payment.UpdatePaymentType(id,paymentType);
+            PaymentTypeDto modifiedPaymentType = await _payment.UpdatePaymentType(id,paymentType);
 
             return Ok(modifiedPaymentType);
         }
@@ -63,7 +64,7 @@ namespace Basket_Store_MS.Controller
         // POST: api/PaymentTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PaymentType>> PostPaymentType(PaymentType paymentType)
+        public async Task<ActionResult<PaymentTypeDto>> PostPaymentType(PaymentTypeDto paymentType)
         {
             var newPaymentType = await _payment.Create(paymentType);
 

@@ -20,11 +20,17 @@ namespace Basket_Store_MS.Models.Services
 
         public async Task<ProductDto> Create(Products products)
         {
-            ProductDto productDto = new ProductDto
-            {
-            };
             _context.Entry(products).State = EntityState.Added;
             await _context.SaveChangesAsync();
+            ProductDto productDto = new ProductDto
+            {
+                Id = products.Id,
+                Name = products.Name,
+                Price = products.Price,
+                ProductDescription = products.ProductDescription,
+                Discount = products.Discount,
+                CategoryId = products.CategoryId
+            };
 
             return productDto;
         }
@@ -85,9 +91,19 @@ namespace Basket_Store_MS.Models.Services
             }).ToListAsync();
         }
 
-        public Task<ProductDto> UpdateProduct(int Id, ProductDto products)
+        public async Task<ProductDto> UpdateProduct(int Id, ProductDto products)
         {
-            throw new NotImplementedException();
+            Products product = new Products
+            {
+                Id = products.Id,
+                Name = products.Name,
+                Discount = products.Discount,
+                ProductDescription = products.ProductDescription,
+                Price = products.Price
+            };
+            _context.Entry(product).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return products;
         }
     }
 }

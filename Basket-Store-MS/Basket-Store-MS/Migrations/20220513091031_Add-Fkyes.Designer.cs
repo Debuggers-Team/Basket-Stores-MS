@@ -3,14 +3,16 @@ using Basket_Store_MS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Basket_Store_MS.Migrations
 {
     [DbContext(typeof(BasketStoreDBContext))]
-    partial class BasketStoreDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220513091031_Add-Fkyes")]
+    partial class AddFkyes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,14 +104,14 @@ namespace Basket_Store_MS.Migrations
                         {
                             Id = 1,
                             FeedBackDescription = "Beauty",
-                            ProductsId = 1,
+                            ProductsId = 0,
                             Rating = 40.299999999999997
                         },
                         new
                         {
                             Id = 2,
                             FeedBackDescription = "Clothes",
-                            ProductsId = 2,
+                            ProductsId = 0,
                             Rating = 150.40000000000001
                         });
                 });
@@ -174,7 +176,7 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 1,
+                            CategoryId = 0,
                             Discount = true,
                             InStock = 150,
                             Name = "Eyeliner",
@@ -184,7 +186,7 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 2,
-                            CategoryId = 2,
+                            CategoryId = 0,
                             Discount = false,
                             InStock = 100,
                             Name = "Trousers",

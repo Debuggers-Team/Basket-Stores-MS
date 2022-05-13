@@ -34,23 +34,17 @@ namespace Basket_Store_MS
                 // Our DATABASE_URL from js days
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
-
             });
          services.AddTransient<ICart, CartService>();
             services.AddTransient<IPaymentType,PaymentTypeServices>();
             services.AddTransient<IFeedBack, FeedBackServices>();
-            services.AddTransient<IProuduct, ProuductRepo>();
+            services.AddTransient<IProuduct, ProuductServices>();
             services.AddTransient<ICategory, CategoryServiece>();
             services.AddControllers()
                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-
-
-
-
             services.AddControllers();
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -1,6 +1,6 @@
-﻿namespace Basket_Store_MS.Models
+﻿namespace Basket_Store_MS.Models.DTO
 {
-    public class FeedBack
+    public class FeedBackDto
     {
         public int Id { get; set; }
         public string FeedBackDescription { get; set; }

@@ -1,4 +1,5 @@
 ﻿
+using Basket_Store_MS.Models.DTO;
 using System.Collections.Generic;
 
 namespace Basket_Store_MS.Models
@@ -11,8 +12,10 @@ namespace Basket_Store_MS.Models
         public int InStock { get; set; }
         public string ProductDescription { get; set; }
         public bool Discount { get; set; }
+        //Foreign key
+        public int CategoryId { get; set; }
 
-        public List<FeedBack> feedBack { get; set; }
-
+        public List<FeedBack> FeedBack { get; set; }
+        public Category Category { get; set; }
     }
 }

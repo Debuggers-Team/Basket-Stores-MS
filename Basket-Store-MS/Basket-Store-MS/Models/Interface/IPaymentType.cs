@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Basket_Store_MS.Models.DTO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Basket_Store_MS.Models.Interface
@@ -6,16 +7,16 @@ namespace Basket_Store_MS.Models.Interface
     public interface IPaymentType
     {
         //Create new PaymentType
-        Task<PaymentType> Create(PaymentType paymentType);
+        Task<PaymentTypeDto> Create(PaymentTypeDto paymentType);
 
         //Get All PaymentType
-        Task<List<PaymentType>> GetPaymentTypes();
+        Task<List<PaymentTypeDto>> GetPaymentTypes();
 
         //Get PaymentType by Id
-        Task<PaymentType> GetPaymentType(int id);
+        Task<PaymentTypeDto> GetPaymentType(int id);
 
         //Update PaymentType
-        Task<PaymentType> UpdatePaymentType(int id, PaymentType paymentType);
+        Task<PaymentTypeDto> UpdatePaymentType(int id, PaymentTypeDto paymentType);
 
         //Delete PaymentType by Id
         Task DeletePaymentType(int id);

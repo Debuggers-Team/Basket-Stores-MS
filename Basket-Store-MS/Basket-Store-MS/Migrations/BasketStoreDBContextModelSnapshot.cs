@@ -25,6 +25,9 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
@@ -39,12 +42,14 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
+                            PaymentType = 0,
                             State = "Delivered",
                             TotalCost = 50.600000000000001
                         },
                         new
                         {
                             Id = 2,
+                            PaymentType = 0,
                             State = "Open",
                             TotalCost = 40.219999999999999
                         });
@@ -123,10 +128,16 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PaymentTypes")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CartId")
+                        .IsUnique();
 
                     b.ToTable("PaymentTypes");
 
@@ -134,11 +145,13 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
+                            CartId = 0,
                             PaymentTypes = "Visa"
                         },
                         new
                         {
                             Id = 2,
+                            CartId = 0,
                             PaymentTypes = "Master Card"
                         });
                 });
@@ -178,7 +191,7 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 1,
+                            CategoryId = 4,
                             Discount = true,
                             InStock = 150,
                             Name = "Eyeliner",
@@ -188,7 +201,7 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 2,
-                            CategoryId = 2,
+                            CategoryId = 4,
                             Discount = false,
                             InStock = 100,
                             Name = "Trousers",
@@ -206,6 +219,17 @@ namespace Basket_Store_MS.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Basket_Store_MS.Models.PaymentType", b =>
+                {
+                    b.HasOne("Basket_Store_MS.Models.Cart", "Cart")
+                        .WithOne("PaymentTypes")
+                        .HasForeignKey("Basket_Store_MS.Models.PaymentType", "CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+                });
+
             modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
                 {
                     b.HasOne("Basket_Store_MS.Models.Category", "Category")
@@ -215,6 +239,11 @@ namespace Basket_Store_MS.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.Cart", b =>
+                {
+                    b.Navigation("PaymentTypes");
                 });
 
             modelBuilder.Entity("Basket_Store_MS.Models.Category", b =>

@@ -23,7 +23,7 @@ namespace Basket_Store_MS.Models.Services
                 Id = categorydto.Id,
                 Name = (Name)Enum.Parse(typeof(Name), categorydto.Name.ToString())
             };
-            _context.Entry(categorydto).State = EntityState.Added;
+            _context.Entry(category).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return categorydto;
         }

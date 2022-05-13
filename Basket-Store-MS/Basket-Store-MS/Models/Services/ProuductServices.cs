@@ -54,7 +54,7 @@ namespace Basket_Store_MS.Models.Services
                 CategoryId = X.CategoryId,
                 category = new CategoryDto
                 {
-                    Name = X.Category.Name
+                    Name = X.Category.Name.ToString()
                 },
                 feedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
@@ -79,7 +79,7 @@ namespace Basket_Store_MS.Models.Services
                 CategoryId = X.CategoryId,
                 category = new CategoryDto
                 {
-                    Name = X.Category.Name
+                    Name = X.Category.Name.ToString()
                 },
                 feedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto

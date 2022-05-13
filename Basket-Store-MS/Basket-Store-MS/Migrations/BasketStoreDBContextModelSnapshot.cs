@@ -57,8 +57,8 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -68,12 +68,12 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Beauty"
+                            Name = 1
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Clothes"
+                            Name = 2
                         });
                 });
 
@@ -94,6 +94,8 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("FeedBacks");
 
@@ -168,6 +170,8 @@ namespace Basket_Store_MS.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -191,6 +195,36 @@ namespace Basket_Store_MS.Migrations
                             Price = 20.0,
                             ProductDescription = "Test2"
                         });
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.FeedBack", b =>
+                {
+                    b.HasOne("Basket_Store_MS.Models.Products", null)
+                        .WithMany("FeedBack")
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
+                {
+                    b.HasOne("Basket_Store_MS.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
+                {
+                    b.Navigation("FeedBack");
                 });
 #pragma warning restore 612, 618
         }

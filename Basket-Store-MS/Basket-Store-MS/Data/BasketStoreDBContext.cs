@@ -24,8 +24,8 @@ namespace Basket_Store_MS.Data
             );
 
             modelBuilder.Entity<Category>().HasData(
-              new Category { Id = 1, Name = "Beauty" },
-              new Category { Id = 2, Name = "Clothes" }
+              new Category { Id = 1, Name = (Name)1 },
+              new Category { Id = 2, Name = (Name)2 }
             );
             modelBuilder.Entity<FeedBack>().HasData(
             new FeedBack { Id = 1, FeedBackDescription = "Beauty",   Rating = 40.3 ,ProductsId = 1 },
@@ -38,8 +38,8 @@ namespace Basket_Store_MS.Data
 
             );
             modelBuilder.Entity<Products>().HasData(
-            new Products { Id = 1, Name = "Eyeliner" , Price = 10, InStock = 150 , ProductDescription = "Test" ,Discount = true , CategoryId =1 },
-            new Products { Id = 2, Name = "Trousers", Price = 20, InStock = 100, ProductDescription = "Test2", Discount = false , CategoryId =2 }
+            new Products { Id = 1, Name = "Eyeliner" , Price = 10, InStock = 150 , ProductDescription = "Test" ,Discount = true , CategoryId =4 },
+            new Products { Id = 2, Name = "Trousers", Price = 20, InStock = 100, ProductDescription = "Test2", Discount = false , CategoryId =4 }
 
      );
 

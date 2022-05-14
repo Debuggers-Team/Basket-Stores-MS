@@ -12,7 +12,7 @@ namespace Basket_Store_MS.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
+            #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.16")
@@ -24,9 +24,6 @@ namespace Basket_Store_MS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
@@ -42,14 +39,12 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
-                            PaymentType = 0,
                             State = "Delivered",
                             TotalCost = 50.600000000000001
                         },
                         new
                         {
                             Id = 2,
-                            PaymentType = 0,
                             State = "Open",
                             TotalCost = 40.219999999999999
                         });
@@ -62,8 +57,8 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -73,12 +68,12 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
-                            Name = 1
+                            Name = "Beauty"
                         },
                         new
                         {
                             Id = 2,
-                            Name = 2
+                            Name = "Clothes"
                         });
                 });
 
@@ -99,8 +94,6 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductsId");
 
                     b.ToTable("FeedBacks");
 
@@ -128,16 +121,10 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PaymentTypes")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId")
-                        .IsUnique();
 
                     b.ToTable("PaymentTypes");
 
@@ -145,13 +132,11 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 1,
-                            CartId = 0,
                             PaymentTypes = "Visa"
                         },
                         new
                         {
                             Id = 2,
-                            CartId = 0,
                             PaymentTypes = "Master Card"
                         });
                 });
@@ -183,15 +168,13 @@ namespace Basket_Store_MS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CategoryId = 4,
+                            CategoryId = 1,
                             Discount = true,
                             InStock = 150,
                             Name = "Eyeliner",
@@ -201,59 +184,13 @@ namespace Basket_Store_MS.Migrations
                         new
                         {
                             Id = 2,
-                            CategoryId = 4,
+                            CategoryId = 2,
                             Discount = false,
                             InStock = 100,
                             Name = "Trousers",
                             Price = 20.0,
                             ProductDescription = "Test2"
                         });
-                });
-
-            modelBuilder.Entity("Basket_Store_MS.Models.FeedBack", b =>
-                {
-                    b.HasOne("Basket_Store_MS.Models.Products", null)
-                        .WithMany("FeedBack")
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Basket_Store_MS.Models.PaymentType", b =>
-                {
-                    b.HasOne("Basket_Store_MS.Models.Cart", "Cart")
-                        .WithOne("PaymentTypes")
-                        .HasForeignKey("Basket_Store_MS.Models.PaymentType", "CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-                });
-
-            modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
-                {
-                    b.HasOne("Basket_Store_MS.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Basket_Store_MS.Models.Cart", b =>
-                {
-                    b.Navigation("PaymentTypes");
-                });
-
-            modelBuilder.Entity("Basket_Store_MS.Models.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
-                {
-                    b.Navigation("FeedBack");
                 });
 #pragma warning restore 612, 618
         }

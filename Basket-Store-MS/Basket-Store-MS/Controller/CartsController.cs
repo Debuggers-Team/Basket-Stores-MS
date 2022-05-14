@@ -15,7 +15,6 @@ namespace Basket_Store_MS.Controller
     [ApiController]
     public class CartsController : ControllerBase
     {
-
         private readonly ICart _cart;
 
         public CartsController(ICart cart)
@@ -68,10 +67,5 @@ namespace Basket_Store_MS.Controller
             await _cart.Delete(id);
             return NoContent();
         }
-
-        //private bool CartExists(int id)
-        //{
-        //    return _context.Carts.Any(e => e.Id == id);
-        //}
     }
 }

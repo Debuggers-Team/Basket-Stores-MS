@@ -6,6 +6,6 @@
         public string FeedBackDescription { get; set; }
         public double Rating { get; set; }
         //FK
-        public int ProductsId { get; set; }
+        public string ProductsName { get; set; }
     }
 }

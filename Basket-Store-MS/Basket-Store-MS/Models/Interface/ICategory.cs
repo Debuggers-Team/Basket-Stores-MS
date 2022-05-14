@@ -6,10 +6,10 @@ namespace Basket_Store_MS.Models.Interface
 {
     public interface ICategory
     {
-        Task<CategoryDto> Create(CategoryDto category);
+        Task<CategoryDto> Create(Category category);
         Task<List<CategoryDto>> GetCategories();
         Task<CategoryDto> GetCategory(int id);
-        Task<CategoryDto> UpdateCategory(int id, CategoryDto category);
+        Task<CategoryDto> UpdateCategory(int id, Category category);
         Task Delete(int id);
     }
 }

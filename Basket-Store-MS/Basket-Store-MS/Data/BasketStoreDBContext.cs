@@ -22,27 +22,22 @@ namespace Basket_Store_MS.Data
               new Cart { Id = 1, TotalCost = 50.60 , State = "Delivered" },
               new Cart { Id = 2, TotalCost = 40.22 , State = "Open" }
             );
-
             modelBuilder.Entity<Category>().HasData(
-              new Category { Id = 1, Name = (Name)1 },
-              new Category { Id = 2, Name = (Name)2 }
+              new Category { Id = 1, Name = "Beauty" },
+              new Category { Id = 2, Name = "Clothes" }
             );
             modelBuilder.Entity<FeedBack>().HasData(
             new FeedBack { Id = 1, FeedBackDescription = "Beauty",   Rating = 40.3 ,ProductsId = 1 },
             new FeedBack { Id = 2, FeedBackDescription = "Clothes" , Rating = 150.4 , ProductsId = 2 }
-            
             );
             modelBuilder.Entity<PaymentType>().HasData(
             new PaymentType { Id = 1, PaymentTypes = "Visa"},
             new PaymentType { Id = 2, PaymentTypes = "Master Card"}
-
             );
             modelBuilder.Entity<Products>().HasData(
             new Products { Id = 1, Name = "Eyeliner" , Price = 10, InStock = 150 , ProductDescription = "Test" ,Discount = true , CategoryId =4 },
             new Products { Id = 2, Name = "Trousers", Price = 20, InStock = 100, ProductDescription = "Test2", Discount = false , CategoryId =4 }
-
-     );
-
+            );
         }
 
     }

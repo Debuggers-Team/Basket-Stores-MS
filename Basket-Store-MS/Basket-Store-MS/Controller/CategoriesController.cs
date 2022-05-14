@@ -35,14 +35,19 @@ namespace Basket_Store_MS.Controller
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
-            CategoryDto categorydto = await _category.GetCategory(id);
-            return Ok(categorydto);
+            var category = await _category.GetCategory(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return category;
         }
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, CategoryDto category)
+        public async Task<IActionResult> PutCategory(int id, Category category)
         {
 
             if (id != category.Id)
@@ -56,7 +61,7 @@ namespace Basket_Store_MS.Controller
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CategoryDto>> PostCategory(CategoryDto category)
+        public async Task<ActionResult<CategoryDto>> PostCategory(Category category)
         {
             CategoryDto newCategory = await _category.Create(category);
             return Ok(newCategory);

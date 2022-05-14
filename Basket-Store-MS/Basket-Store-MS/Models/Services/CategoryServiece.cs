@@ -16,15 +16,18 @@ namespace Basket_Store_MS.Models.Services
         {
             _context = context;
         }
-        public async Task<CategoryDto> Create(CategoryDto categorydto)
+        public async Task<CategoryDto> Create(Category category)
         {
-            Category category = new Category
-            {
-                Id = categorydto.Id,
-                Name = (Name)Enum.Parse(typeof(Name), categorydto.Name.ToString())
-            };
             _context.Entry(category).State = EntityState.Added;
+
             await _context.SaveChangesAsync();
+
+            CategoryDto categorydto = new CategoryDto()
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
             return categorydto;
         }
 
@@ -33,27 +36,22 @@ namespace Basket_Store_MS.Models.Services
             return await _context.Categories
                     .Select(category => new CategoryDto
                     {
-                        Id = id,
-                        Name = category.Name.ToString(),
+                        Id = category.Id,
+                        Name = category.Name,
                         Products = category.Products.Select(p => new ProductDto
                         {
                             Id = p.Id,
-                            Name = p.Name.ToString(),
-                            feedBacks = p.FeedBack
+                            Name = p.Name,
+                            Price = p.Price,
+                            ProductDescription = p.ProductDescription,
+                            FeedBacks = p.FeedBack
                               .Select(f => new FeedBackDto
                               {
                                   Id = f.Id,
                                   FeedBackDescription = f.FeedBackDescription,
                                   Rating = f.Rating,
-                                  ProductsId = f.ProductsId
-                              }).ToList(),
-                            category = new CategoryDto
-                            {
-
-                                Name = p.Category.Name.ToString()
-
-                            }
-
+                                  ProductsName = p.Name
+                              }).ToList()
                         }).ToList()
                     }).FirstOrDefaultAsync(a => a.Id == id);
         }
@@ -67,35 +65,35 @@ namespace Basket_Store_MS.Models.Services
                           Products = category.Products.Select(p => new ProductDto
                           {
                               Id = p.Id,
-                              Name = p.Name.ToString(),
-                              feedBacks = p.FeedBack
+                              Name = p.Name,
+                              Price = p.Price,
+                              ProductDescription = p.ProductDescription,
+                              Discount = p.Discount,
+                              CategoryName = category.Name,
+                              FeedBacks = p.FeedBack
                               .Select(f => new FeedBackDto
                               {
                                   Id = f.Id,
                                   FeedBackDescription = f.FeedBackDescription,
                                   Rating = f.Rating,
-                                  ProductsId = f.ProductsId
-                              }).ToList(),
-                              category = new CategoryDto
-                              {
-                                  Name = p.Category.Name.ToString()
-                              }
-                             
+                                  ProductsName = p.Name
+                              }).ToList()
                           }).ToList()
                           }).ToListAsync();
         }
 
-        public async Task<CategoryDto> UpdateCategory(int id, CategoryDto category)
+        public async Task<CategoryDto> UpdateCategory(int id, Category category)
         {
+            _context.Entry(category).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
-            Category category1 = new Category
+            CategoryDto categoryDto = new CategoryDto
             {
                 Id = category.Id,
-                Name = (Name)Enum.Parse(typeof(Name), category.Name)
+                Name = category.Name
             };
-            _context.Entry(category1).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return category;
+
+            return categoryDto;
         }
         public async Task Delete(int id)
         {

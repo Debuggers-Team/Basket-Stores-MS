@@ -16,6 +16,5 @@ namespace Basket_Store_MS.Models
         public int CategoryId { get; set; }
 
         public List<FeedBack> FeedBack { get; set; }
-        public Category Category { get; set; }
     }
 }

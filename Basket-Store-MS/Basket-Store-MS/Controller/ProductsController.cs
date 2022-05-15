@@ -97,13 +97,13 @@ namespace Basket_Store_MS.Controller
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducts(int id, ProductDto products)
+        public async Task<IActionResult> PutProducts(int id, Products product)
         {
-            if (id != products.Id)
+            if (id != product.Id)
             {
                 return BadRequest();
             }
-            var modifiedproduct = await _prouduct.UpdateProduct(id, products);
+            var modifiedproduct = await _prouduct.UpdateProduct(id, product);
 
             return Ok(modifiedproduct);
         }

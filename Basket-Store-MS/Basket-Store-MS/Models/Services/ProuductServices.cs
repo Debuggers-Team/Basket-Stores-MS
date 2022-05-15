@@ -193,20 +193,20 @@ namespace Basket_Store_MS.Models.Services
             }).Where(pro => pro.Price >= from && pro.Price <= to).ToListAsync();
         }
 
-        public async Task<ProductDto> UpdateProduct(int Id, ProductDto products)
+        public async Task<ProductDto> UpdateProduct(int Id, Products product)
         {
-            Products product = new Products
+            ProductDto productDto = new ProductDto
             {
-                Id = products.Id,
-                Name = products.Name,
-                Discount = products.Discount,
-                ProductDescription = products.ProductDescription,
-                Price = products.Price
+                Id = product.Id,
+                Name = product.Name,
+                Discount = product.Discount,
+                ProductDescription = product.ProductDescription,
+                Price = product.Price
             };
             _context.Entry(product).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return products;
-        }
 
+            return productDto;
+        }
     }
 }

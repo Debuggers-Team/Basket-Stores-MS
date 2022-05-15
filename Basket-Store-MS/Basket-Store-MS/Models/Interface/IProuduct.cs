@@ -22,7 +22,7 @@ namespace Basket_Store_MS.Models.Interface
         //Get Prouducts From To Price
         Task<List<ProductDto>> GetProductsFromTo(int from , int to);
 
-        Task<ProductDto> UpdateProduct(int Id, ProductDto products);
+        Task<ProductDto> UpdateProduct(int Id, Products products);
         Task Delete(int id);
     }
 }

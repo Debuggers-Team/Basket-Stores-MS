@@ -1,6 +1,7 @@
 ﻿
 using Basket_Store_MS.Models.DTO;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Basket_Store_MS.Models
 {
@@ -13,8 +14,11 @@ namespace Basket_Store_MS.Models
         public string ProductDescription { get; set; }
         public bool Discount { get; set; }
         //Foreign key
+        public Category Category { get; set; }
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
-
+        //Navigation properties
+        public List<CartProduct> CartProducts { get; set; }
         public List<FeedBack> FeedBack { get; set; }
     }
 }

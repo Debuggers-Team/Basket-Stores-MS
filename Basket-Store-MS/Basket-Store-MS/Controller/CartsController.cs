@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
 using Basket_Store_MS.Models.Interface;
+using Basket_Store_MS.Models.DTO;
 
 namespace Basket_Store_MS.Controller
 {
@@ -32,9 +33,9 @@ namespace Basket_Store_MS.Controller
 
         // GET: api/Carts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cart>> GetCart(int id)
+        public async Task<ActionResult<CartDto>> GetCart(int id)
         {
-            Cart cart = await _cart.GetCart(id);
+            var cart = await _cart.GetCart(id);
             return Ok(cart);
         }
 
@@ -56,7 +57,7 @@ namespace Basket_Store_MS.Controller
         [HttpPost]
         public async Task<ActionResult<Cart>> PostCart(Cart cart)
         {
-            Cart newCart = await _cart.Create(cart);
+            var newCart = await _cart.Create(cart);
             return Ok(newCart);
         }
 
@@ -65,6 +66,23 @@ namespace Basket_Store_MS.Controller
         public async Task<IActionResult> DeleteCart(int id)
         {
             await _cart.Delete(id);
+            return NoContent();
+        }
+        //Add Product to cart
+        //api/Carts/3/2
+        [HttpPost("{CartId}/{ProductId}")]
+        public async Task<IActionResult> AddProductToCart(int productId, int cartId)
+        {
+            await _cart.AddProductToCart(cartId, productId);
+            return NoContent();
+        }
+
+        // Delete Product
+        //api/Carts/5/1
+        [HttpDelete("{CartId}/{ProductId}")]
+        public async Task<IActionResult> RemoveProductFromCart(int productId, int cartId)
+        {
+            await _cart.RemoveProductFromCart(cartId, productId);
             return NoContent();
         }
     }

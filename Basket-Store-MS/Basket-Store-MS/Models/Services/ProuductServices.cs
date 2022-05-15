@@ -51,7 +51,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {
@@ -72,7 +72,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {   Id = Y.Id,
@@ -93,7 +93,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {
@@ -115,7 +115,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {
@@ -137,7 +137,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {
@@ -159,7 +159,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {
@@ -181,7 +181,7 @@ namespace Basket_Store_MS.Models.Services
                 Price = X.Price,
                 ProductDescription = X.ProductDescription,
                 Discount = X.Discount,
-                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.Id).Name,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
                 FeedBacks = X.FeedBack
                               .Select(Y => new FeedBackDto
                               {

@@ -44,7 +44,7 @@ namespace Basket_Store_MS.Controller
             return product;
         }
 
-        //Order By Descending
+        // Order By Descending
         // GET: api/Products/Des
         [HttpGet("Des")]
         public async Task<ActionResult<ProductDto>> GetProductsDes()
@@ -54,7 +54,7 @@ namespace Basket_Store_MS.Controller
             return Ok(result);
         }
 
-        //Order By Ascending
+        // Order By Ascending
         // GET: api/Products/Asc
         [HttpGet("Asc")]
         public async Task<ActionResult<ProductDto>> GetProductsAsc()
@@ -64,7 +64,7 @@ namespace Basket_Store_MS.Controller
             return Ok(result);
         }
 
-        //Order By Min To Max
+        // Order By Min To Max
         // GET: api/Products/MinToMax
         [HttpGet("MinToMax")]
         public async Task<ActionResult<ProductDto>> GetProductsMinToMax()
@@ -74,7 +74,7 @@ namespace Basket_Store_MS.Controller
             return Ok(result);
         }
 
-        //Order By Max To Min
+        // Order By Max To Min
         // GET: api/Products/MinToMax
         [HttpGet("MaxToMin")]
         public async Task<ActionResult<ProductDto>> GetProductsMaxToMin()
@@ -84,8 +84,8 @@ namespace Basket_Store_MS.Controller
             return Ok(result);
         }
 
-        //Order By Max To Min
-        // GET: api/Products/MinToMax
+        // Get data from to price 
+        // GET: api/Products/FromTo/10/100
         [HttpGet("FromTo/{from}/{to}")]
         public async Task<ActionResult<ProductDto>> GetProductsFromTo(int from , int to)
         {

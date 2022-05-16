@@ -1,9 +1,10 @@
 ﻿using Basket_Store_MS.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Basket_Store_MS.Data
 {
-    public class BasketStoreDBContext : DbContext
+    public class BasketStoreDBContext :  IdentityDbContext<ApplicationUser>
     {
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -17,7 +18,7 @@ namespace Basket_Store_MS.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // This calls the base method, but does nothing
-            // base.OnModelCreating(modelBuilder);
+             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Cart>().HasData(
               new Cart { Id = 1, TotalCost = 35.00, State = "Delivered", Quantity = 1 },

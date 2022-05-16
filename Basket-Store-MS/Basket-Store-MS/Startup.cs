@@ -1,13 +1,14 @@
 
 
 using Basket_Store_MS.Data;
-
+using Basket_Store_MS.Models;
 using Basket_Store_MS.Models.Interface;
 using Basket_Store_MS.Models.Services;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,12 @@ namespace Basket_Store_MS
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                // There are other options like this
+            })
+            .AddEntityFrameworkStores<BasketStoreDBContext>();
             services.AddDbContext<BasketStoreDBContext>(options => {
                 // Our DATABASE_URL from js days
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -41,6 +48,8 @@ namespace Basket_Store_MS
             services.AddTransient<IFeedBack, FeedBackServices>();
             services.AddTransient<IProuduct, ProuductServices>();
             services.AddTransient<ICategory, CategoryServiece>();
+            services.AddTransient<IUserService, IdentityUserService>();
+
             services.AddControllers()
                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

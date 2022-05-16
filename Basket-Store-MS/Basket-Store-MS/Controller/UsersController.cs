@@ -1,6 +1,8 @@
-﻿using Basket_Store_MS.Models.DTO;
+﻿using Basket_Store_MS.Models;
+using Basket_Store_MS.Models.DTO;
 using Basket_Store_MS.Models.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -12,9 +14,11 @@ namespace Basket_Store_MS.Controller
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService) 
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UsersController(IUserService userService, UserManager<ApplicationUser> userManager) // inject IUserService 
         {
             _userService = userService;
+            _userManager = userManager;
         }
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUser data)
@@ -47,13 +51,29 @@ namespace Basket_Store_MS.Controller
                 }
                 else
                 {
-                    return BadRequest("User not found");
+                    return BadRequest($"User {loginData.Username} with the given password cannot be found");
                 }
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
+        }
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword(ResetPassword model)
+        {
+            // Find the user by email
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user != null)
+            {
+                var res = await _userService.ResetPassword(model.Email, model.Password);
+                if (res != null)
+                {
+                    return Ok("password reset done!");
+                }
+            }
+            return null;
         }
     }
 }

@@ -8,23 +8,16 @@ namespace Basket_Store_MS.Models.Services
     public class IdentityUserService : IUserService
     {
        
-    
-        // Connect to Identity’s “User Manager” to do the database work
-        private UserManager<ApplicationUser> _userManager;
-        // ApplicationUser we want to manage it
+           private UserManager<ApplicationUser> _userManager;
         public IdentityUserService(UserManager<ApplicationUser> manager)
         {
             _userManager = manager;
         }
         public async Task<UserDto> Authenticate(string username, string password)
         {
-            // FindByNameAsync Finds and returns a user, if any, who has the specified user name.
-            // resource: https://stackoverflow.com/questions/55149535/usermanager-checkpasswordasync-always-returns-failure
             var user = await _userManager.FindByNameAsync(username);
             if (user != null)
             {
-                //check if password is correct
-                //PasswordVerificationResult result = _userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, password);
                 if (await _userManager.CheckPasswordAsync(user, password))
                 {
                     UserDto userDto = new UserDto
@@ -34,12 +27,21 @@ namespace Basket_Store_MS.Models.Services
                     };
                     return userDto;
                 }
-                //var user = UserManager.FindByNameAsync(username);
-                //return SignInManager.UserManager.CheckPassword(user, Password);
             }
             return null;
         }
-        // RegisterUserDto data means take data from body, will take all fields
+        public async Task<UserDto> ResetPassword(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var hashPassword = _userManager.PasswordHasher.HashPassword(user, password);
+            user.PasswordHash = hashPassword;
+            await _userManager.UpdateAsync(user);
+            return new UserDto
+            {
+                Id = user.Id,
+                Username = user.UserName,
+            };
+        }
         public async Task<UserDto> Register(RegisterUser data, ModelStateDictionary modelState)
         {
             var user = new ApplicationUser
@@ -50,7 +52,6 @@ namespace Basket_Store_MS.Models.Services
             };
 
             var result = await _userManager.CreateAsync(user, data.Password);
-            // CreateAsync : create user, and password hash password and save it in database
             if (result.Succeeded)
             {
                 UserDto userDto = new UserDto

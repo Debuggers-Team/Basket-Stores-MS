@@ -94,6 +94,20 @@ namespace Basket_Store_MS.Controller
             return Ok(result);
         }
 
+        // Search for a specific product by name or  
+        // GET: api/Products/Search/Iphone
+        [HttpGet("Search/{name}")]
+        public async Task<ActionResult<ProductDto>> SearchForProduct(string name)
+        {
+            var result = await _prouduct.SearchForProduct(name);
+
+            if (result.Count == 0)
+            {
+                return Content("No result found");
+            }
+            return Ok(result);
+        }
+
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -21,6 +21,8 @@ namespace Basket_Store_MS.Models.Interface
         Task<List<ProductDto>> GetProductsMinToMax();
         //Get Prouducts From To Price
         Task<List<ProductDto>> GetProductsFromTo(int from , int to);
+        //Search for a specific product by name
+        Task<List<ProductDto>> SearchForProduct(string name);
 
         Task<ProductDto> UpdateProduct(int Id, Products products);
         Task Delete(int id);

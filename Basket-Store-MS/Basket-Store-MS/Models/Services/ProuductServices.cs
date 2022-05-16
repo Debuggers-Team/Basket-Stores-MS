@@ -193,6 +193,30 @@ namespace Basket_Store_MS.Models.Services
             }).Where(pro => pro.Price >= from && pro.Price <= to).ToListAsync();
         }
 
+        //Search for a specific product by name and description
+        public async Task<List<ProductDto>> SearchForProduct(string name)
+        {
+            return await _context.Products.Select(X => new ProductDto
+            {
+                Id = X.Id,
+                Name = X.Name,
+                Price = X.Price,
+                ProductDescription = X.ProductDescription,
+                Discount = X.Discount,
+                CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == X.CategoryId).Name,
+                FeedBacks = X.FeedBack
+                              .Select(Y => new FeedBackDto
+                              {
+                                  Id = Y.Id,
+                                  FeedBackDescription = Y.FeedBackDescription,
+                                  Rating = Y.Rating,
+                                  ProductsName = X.Name
+                              }).ToList()
+            }).Where(pro => pro.Name.Contains(name.ToLower()) || pro.Name.Contains(name.ToUpper())
+                                                              || pro.ProductDescription.Contains(name.ToLower())
+                                                              || pro.ProductDescription.Contains(name.ToUpper())).ToListAsync();
+        }
+
         public async Task<ProductDto> UpdateProduct(int Id, Products product)
         {
             ProductDto productDto = new ProductDto

@@ -46,14 +46,7 @@ namespace Basket_Store_MS.Models.Services
                     Price = cp.Products.Price,
                     ProductDescription = cp.Products.ProductDescription,
                     Discount = cp.Products.Discount,
-                    CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == cp.Products.CategoryId).Name,
-                    FeedBacks = cp.Products.FeedBack.Select(fb => new FeedBackDto
-                              {
-                                  Id = fb.Id,
-                                  FeedBackDescription = fb.FeedBackDescription,
-                                  Rating = fb.Rating,
-                                  ProductsName = cp.Products.Name
-                              }).ToList()
+                    CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == cp.Products.CategoryId).Name
                 }).ToList()
             }).ToListAsync();
         }
@@ -73,14 +66,7 @@ namespace Basket_Store_MS.Models.Services
                     Price = cp.Products.Price,
                     ProductDescription = cp.Products.ProductDescription,
                     Discount = cp.Products.Discount,
-                    CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == cp.Products.CategoryId).Name,
-                    FeedBacks = cp.Products.FeedBack.Select(fb => new FeedBackDto
-                    {
-                        Id = fb.Id,
-                        FeedBackDescription = fb.FeedBackDescription,
-                        Rating = fb.Rating,
-                        ProductsName = cp.Products.Name
-                    }).ToList()
+                    CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == cp.Products.CategoryId).Name
                 }).ToList()
             }).FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -119,7 +105,7 @@ namespace Basket_Store_MS.Models.Services
         }
         public async Task RemoveProductFromCart(int productId, int cartId)
         {
-            var removeProduct = await _context.CartProduct.FirstOrDefaultAsync(x => x.ProductId == productId && x.CartId == cartId);
+            var removeProduct = await _context.CartProduct.Where(x => x.ProductId == productId && x.CartId == cartId).FirstAsync();
             _context.Entry(removeProduct).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }

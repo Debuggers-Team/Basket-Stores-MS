@@ -18,7 +18,7 @@ namespace Basket_Store_Test
             var cartProduct = new CartService(_db);
 
             // Act
-            await cartProduct.AddProductToCart(product.Id, cart.Id);
+            await cartProduct.AddProductToCart(cart.Id, product.Id);
 
             // Assert
             var actualCart = await cartProduct.GetCart(cart.Id);
@@ -26,7 +26,7 @@ namespace Basket_Store_Test
             Assert.Contains(actualCart.Products, a => a.Id == product.Id);
 
             // Act
-            await cartProduct.RemoveProductFromCart(product.Id, cart.Id);
+            await cartProduct.RemoveProductFromCart(cart.Id, product.Id);
 
             // Assert
             actualCart = await cartProduct.GetCart(cart.Id);

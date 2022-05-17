@@ -70,8 +70,8 @@ namespace Basket_Store_MS.Controller
         }
         //Add Product to cart
         //api/Carts/3/2
-        [HttpPost("{CartId}/{ProductId}")]
-        public async Task<IActionResult> AddProductToCart(int productId, int cartId)
+        [HttpPost("{cartId}/{productId}")]
+        public async Task<IActionResult> AddProductToCart(int cartId, int productId)
         {
             await _cart.AddProductToCart(cartId, productId);
             return NoContent();
@@ -79,8 +79,8 @@ namespace Basket_Store_MS.Controller
 
         // Delete Product
         //api/Carts/5/1
-        [HttpDelete("{CartId}/{ProductId}")]
-        public async Task<IActionResult> RemoveProductFromCart(int productId, int cartId)
+        [HttpDelete("{cartId}/{productId}")]
+        public async Task<IActionResult> RemoveProductFromCart(int cartId, int productId)
         {
             await _cart.RemoveProductFromCart(cartId, productId);
             return NoContent();

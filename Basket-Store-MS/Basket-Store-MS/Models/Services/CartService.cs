@@ -93,21 +93,59 @@ namespace Basket_Store_MS.Models.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddProductToCart(int productId, int cartId)
+        public async Task AddProductToCart(int cartId, int productId)
         {
-            CartProduct cartProduct = new CartProduct()
+            var existsCartProduct = _context.CartProduct.Any(cp => cp.ProductId == productId && cp.CartId == cartId);
+            var existsCart = _context.Carts.Any(c => c.Id == cartId);
+            Products productStock = await _context.Products.FindAsync(productId);
+
+            if (existsCart)
             {
-                ProductId = productId,
-                CartId = cartId
-            };
-            _context.Entry(cartProduct).State = EntityState.Added;
-            await _context.SaveChangesAsync();
+                if (productStock.InStock > 0)
+                {
+                    if (existsCartProduct)
+                    {
+                        CartProduct cartProduct = await _context.CartProduct.Where(x => x.ProductId == productId && x.CartId == cartId).FirstAsync();
+                        cartProduct.Quantity += 1;
+                        productStock.InStock -= 1;
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        CartProduct cartProduct = new CartProduct()
+                        {
+                            ProductId = productId,
+                            CartId = cartId,
+                            Quantity = 1
+                        };
+
+                        productStock.InStock -= 1;
+                        _context.Entry(cartProduct).State = EntityState.Added;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
         }
-        public async Task RemoveProductFromCart(int productId, int cartId)
+        public async Task RemoveProductFromCart(int cartId, int productId)
         {
-            var removeProduct = await _context.CartProduct.Where(x => x.ProductId == productId && x.CartId == cartId).FirstAsync();
-            _context.Entry(removeProduct).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            var existsCartProduct = _context.CartProduct.Any(cp => cp.ProductId == productId && cp.CartId == cartId);
+            if (existsCartProduct)
+            {
+                CartProduct removeProduct = await _context.CartProduct.Where(x => x.ProductId == productId && x.CartId == cartId).FirstAsync();
+                Products productStock = await _context.Products.FindAsync(productId);
+                if (removeProduct.Quantity > 1)
+                {
+                    removeProduct.Quantity -= 1;
+                    productStock.InStock += 1;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    productStock.InStock += 1;
+                    _context.Entry(removeProduct).State = EntityState.Deleted;
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

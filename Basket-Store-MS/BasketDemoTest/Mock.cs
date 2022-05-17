@@ -53,5 +53,14 @@ namespace BasketDemoTest
             Assert.NotEqual(0, product.Id); // Sanity check
             return product;
         }
+
+        protected async Task<Favourite> CreateAndSaveTestFavourite()
+        {
+            var favourite = new Favourite { };
+            _db.Favourite.Add(favourite);
+            await _db.SaveChangesAsync();
+            Assert.NotEqual(0, favourite.Id); // Sanity check
+            return favourite;
+        }
     }
 }

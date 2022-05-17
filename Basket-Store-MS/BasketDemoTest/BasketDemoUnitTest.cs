@@ -33,5 +33,30 @@ namespace Basket_Store_Test
 
             Assert.DoesNotContain(actualCart.Products, a => a.Id == product.Id);
         }
+        [Fact]
+        public async Task AddandRemoveFavourite()
+        {
+            var fav = await CreateAndSaveTestFavourite();
+            var product = await CreateAndSaveTestProduct();
+
+
+            var favourite = new FavouriteService(_db);
+
+            // Act
+            await favourite.AddProductToFavourite(fav.Id, product.Id);
+
+            // Assert
+            var actualFav = await favourite.GetFavourite(fav.Id);
+
+            Assert.Contains(actualFav.Products, a => a.Id == product.Id);
+
+            // Act
+            await favourite.RemoveProductFromFavourite(fav.Id,product.Id);
+
+            // Assert
+            actualFav = await favourite.GetFavourite(fav.Id);
+
+            Assert.DoesNotContain(actualFav.Products, a => a.Id == product.Id);
+        }
     }
 }

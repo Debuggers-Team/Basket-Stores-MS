@@ -8,8 +8,12 @@ namespace Basket_Store_MS.Models
         public int Id { get; set; }
         public double TotalCost { get; set; }
         public string State { get; set; }
-        public int Quantity { get; set; }
+        public int TotalQuantity { get; set; }
 
+        //ForeignKey
+        public ApplicationUser ApplicationUser { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string UserId { get; set; }
         //Navigation properties
         public List<CartProduct> CartProducts { get; set; }
     }

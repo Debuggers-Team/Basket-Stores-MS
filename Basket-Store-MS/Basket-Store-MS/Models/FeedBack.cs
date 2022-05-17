@@ -11,5 +11,10 @@ namespace Basket_Store_MS.Models
         public Products Products { get; set; }
         [ForeignKey("Products")]
         public int ProductsId { get; set; }
+        //ForeignKey
+        public ApplicationUser ApplicationUser { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string UserId { get; set; }
+
     }
 }

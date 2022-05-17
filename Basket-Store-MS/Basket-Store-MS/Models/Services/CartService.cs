@@ -25,7 +25,7 @@ namespace Basket_Store_MS.Models.Services
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
                 State = cart.State,
-                Quantity = cart.Quantity
+                TotalQuantity = cart.TotalQuantity
             };
 
             return newCart;
@@ -38,7 +38,7 @@ namespace Basket_Store_MS.Models.Services
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
                 State = cart.State,
-                Quantity = cart.Quantity,
+                TotalQuantity = cart.TotalQuantity,
                 Products = cart.CartProducts.Select(cp => new ProductDto
                 {
                     Id = cp.Products.Id,
@@ -58,7 +58,7 @@ namespace Basket_Store_MS.Models.Services
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
                 State = cart.State,
-                Quantity = cart.Quantity,
+                TotalQuantity = cart.TotalQuantity,
                 Products = cart.CartProducts.Select(cp => new ProductDto
                 {
                     Id = cp.Products.Id,
@@ -78,7 +78,7 @@ namespace Basket_Store_MS.Models.Services
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
                 State = cart.State,
-                Quantity = cart.Quantity
+                TotalQuantity = cart.TotalQuantity
             };
             _context.Entry(cart).State = EntityState.Modified;
             await _context.SaveChangesAsync();

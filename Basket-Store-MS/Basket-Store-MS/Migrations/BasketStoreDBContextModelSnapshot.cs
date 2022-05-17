@@ -91,118 +91,23 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TotalCost")
                         .HasColumnType("float");
 
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Quantity = 1,
-                            State = "Delivered",
-                            TotalCost = 35.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Quantity = 3,
-                            State = "Open",
-                            TotalCost = 40.219999999999999
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Quantity = 4,
-                            State = "Delivered",
-                            TotalCost = 100.0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Quantity = 5,
-                            State = "Delivered",
-                            TotalCost = 200.22
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Quantity = 9,
-                            State = "Open",
-                            TotalCost = 340.22000000000003
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Quantity = 1,
-                            State = "Open",
-                            TotalCost = 760.22000000000003
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Quantity = 5,
-                            State = "Open",
-                            TotalCost = 154.0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Quantity = 1,
-                            State = "Open",
-                            TotalCost = 540.22000000000003
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Quantity = 20,
-                            State = "Delivered",
-                            TotalCost = 512.22000000000003
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Quantity = 1,
-                            State = "Delivered",
-                            TotalCost = 912.22000000000003
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Quantity = 2,
-                            State = "Open",
-                            TotalCost = 632.22000000000003
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Quantity = 3,
-                            State = "Open",
-                            TotalCost = 134.0
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Quantity = 1,
-                            State = "Open",
-                            TotalCost = 45.869999999999997
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Quantity = 2,
-                            State = "Open",
-                            TotalCost = 143.0
-                        });
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Basket_Store_MS.Models.CartProduct", b =>
@@ -211,6 +116,9 @@ namespace Basket_Store_MS.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("CartId", "ProductId");
@@ -267,6 +175,38 @@ namespace Basket_Store_MS.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Basket_Store_MS.Models.Favourite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favourite");
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.FavouriteProduct", b =>
+                {
+                    b.Property<int>("FavouriteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FavouriteId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("FavouriteProduct");
+                });
+
             modelBuilder.Entity("Basket_Store_MS.Models.FeedBack", b =>
                 {
                     b.Property<int>("Id")
@@ -283,9 +223,14 @@ namespace Basket_Store_MS.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductsId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FeedBacks");
 
@@ -415,32 +360,6 @@ namespace Basket_Store_MS.Migrations
                     b.HasIndex("CartId");
 
                     b.ToTable("PaymentTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CartId = 1,
-                            PaymentTypes = "Visa"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CartId = 2,
-                            PaymentTypes = "Master Card"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CartId = 3,
-                            PaymentTypes = "Cash"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CartId = 4,
-                            PaymentTypes = "Credit Card"
-                        });
                 });
 
             modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
@@ -1328,6 +1247,15 @@ namespace Basket_Store_MS.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Basket_Store_MS.Models.Cart", b =>
+                {
+                    b.HasOne("Basket_Store_MS.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("Basket_Store_MS.Models.CartProduct", b =>
                 {
                     b.HasOne("Basket_Store_MS.Models.Cart", "Cart")
@@ -1347,6 +1275,34 @@ namespace Basket_Store_MS.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Basket_Store_MS.Models.Favourite", b =>
+                {
+                    b.HasOne("Basket_Store_MS.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Basket_Store_MS.Models.FavouriteProduct", b =>
+                {
+                    b.HasOne("Basket_Store_MS.Models.Favourite", "Favourite")
+                        .WithMany("FavouriteProducts")
+                        .HasForeignKey("FavouriteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Basket_Store_MS.Models.Products", "Products")
+                        .WithMany("FavouriteProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Favourite");
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Basket_Store_MS.Models.FeedBack", b =>
                 {
                     b.HasOne("Basket_Store_MS.Models.Products", "Products")
@@ -1354,6 +1310,12 @@ namespace Basket_Store_MS.Migrations
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Basket_Store_MS.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Products");
                 });
@@ -1441,9 +1403,16 @@ namespace Basket_Store_MS.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Basket_Store_MS.Models.Favourite", b =>
+                {
+                    b.Navigation("FavouriteProducts");
+                });
+
             modelBuilder.Entity("Basket_Store_MS.Models.Products", b =>
                 {
                     b.Navigation("CartProducts");
+
+                    b.Navigation("FavouriteProducts");
 
                     b.Navigation("FeedBack");
                 });

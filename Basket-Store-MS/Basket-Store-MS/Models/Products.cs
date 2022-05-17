@@ -20,5 +20,6 @@ namespace Basket_Store_MS.Models
         //Navigation properties
         public List<CartProduct> CartProducts { get; set; }
         public List<FeedBack> FeedBack { get; set; }
+        public List<FavouriteProduct> FavouriteProducts { get; set; }
     }
 }

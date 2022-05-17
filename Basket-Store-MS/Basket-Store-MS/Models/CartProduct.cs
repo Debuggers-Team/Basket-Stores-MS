@@ -11,5 +11,7 @@ namespace Basket_Store_MS.Models
         public Products Products { get; set; }
         [ForeignKey("Products")]
         public int ProductId { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

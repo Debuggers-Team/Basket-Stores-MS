@@ -38,7 +38,7 @@ namespace BasketDemoTest
 
         protected async Task<Cart> CreateAndSaveTestCart()
         {
-            var cart = new Cart { TotalCost = 500, State = "open", Quantity = 20 };
+            var cart = new Cart { TotalCost = 500, State = "open", TotalQuantity = 20 };
             _db.Carts.Add(cart);
             await _db.SaveChangesAsync();
             Assert.NotEqual(0, cart.Id); // Sanity check

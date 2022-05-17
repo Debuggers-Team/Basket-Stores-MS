@@ -12,6 +12,8 @@ namespace Basket_Store_MS.Data
         public DbSet<PaymentType> PaymentTypes { get; set; }
         public DbSet<Products> Products { get; set; }
         public DbSet<CartProduct> CartProduct { get; set; }
+        public DbSet<Favourite> Favourite { get; set; }
+        public DbSet<FavouriteProduct> FavouriteProduct { get; set; }
         public BasketStoreDBContext(DbContextOptions options) : base(options)
         { 
         }
@@ -20,23 +22,6 @@ namespace Basket_Store_MS.Data
             // This calls the base method, but does nothing
              base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Cart>().HasData(
-              new Cart { Id = 1, TotalCost = 35.00, State = "Delivered", Quantity = 1 },
-              new Cart { Id = 2, TotalCost = 40.22, State = "Open", Quantity = 3 },
-              new Cart { Id = 3, TotalCost = 100.00, State = "Delivered", Quantity = 4 },
-              new Cart { Id = 4, TotalCost = 200.22, State = "Delivered", Quantity = 5 },
-              new Cart { Id = 5, TotalCost = 340.22, State = "Open", Quantity = 9 },
-              new Cart { Id = 6, TotalCost = 760.22, State = "Open", Quantity = 1 },
-              new Cart { Id = 7, TotalCost = 154.0, State = "Open", Quantity = 5 },
-              new Cart { Id = 8, TotalCost = 540.22, State = "Open", Quantity = 1 },
-              new Cart { Id = 9, TotalCost = 512.22, State = "Delivered", Quantity = 20 },
-              new Cart { Id = 10, TotalCost = 912.22, State = "Delivered", Quantity = 1 },
-              new Cart { Id = 11, TotalCost = 632.22, State = "Open", Quantity = 2 },
-              new Cart { Id = 12, TotalCost = 134.00, State = "Open", Quantity = 3 },
-              new Cart { Id = 13, TotalCost = 45.87, State = "Open", Quantity = 1 },
-              new Cart { Id = 14, TotalCost = 143.00, State = "Open", Quantity = 2 }
-
-            );
             modelBuilder.Entity<Category>().HasData(
               new Category { Id = 1, Name = "Beauty" },
               new Category { Id = 2, Name = "Clothes" },
@@ -62,13 +47,6 @@ namespace Basket_Store_MS.Data
             new FeedBack { Id = 13, FeedBackDescription = "realy amazing", Rating = 5, ProductsId = 56 },
             new FeedBack { Id = 14, FeedBackDescription = "butifull", Rating = 5, ProductsId = 59 },
             new FeedBack { Id = 15, FeedBackDescription = "good", Rating = 5, ProductsId = 61 }
-            );
-            modelBuilder.Entity<PaymentType>().HasData(
-            new PaymentType { Id = 1, PaymentTypes = "Visa", CartId = 1 },
-            new PaymentType { Id = 2, PaymentTypes = "Master Card", CartId = 2 },
-            new PaymentType { Id = 3, PaymentTypes = "Cash", CartId = 3 },
-            new PaymentType { Id = 4, PaymentTypes = "Credit Card", CartId = 4 }
-
             );
             modelBuilder.Entity<Products>().HasData(
             new Products { Id = 1, Name = "Liner & Colossal Kajal", Price = 15.5, InStock = 150, ProductDescription = "Maybelline New York Colossal Bold Liner & Colossal Kajal - EYE KIT COMBO (Pack Of 2), 0.35 gm + 3 ml", Discount = true, CategoryId = 1 },
@@ -147,6 +125,10 @@ namespace Basket_Store_MS.Data
             );
             modelBuilder.Entity<CartProduct>().HasKey(
             CartProduct => new { CartProduct.CartId, CartProduct.ProductId }
+            );
+
+            modelBuilder.Entity<FavouriteProduct>().HasKey(
+            FavouriteProduct => new { FavouriteProduct.FavouriteId, FavouriteProduct.ProductId }
             );
         }
 

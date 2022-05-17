@@ -33,7 +33,7 @@ namespace Basket_Store_MS.Models.Services
 
         public async Task<List<CartDto>> GetCarts()
         {
-            return await _context.Carts.Select(cart => new CartDto
+            List<CartDto> carts = await _context.Carts.Select(cart => new CartDto
             {
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
@@ -49,11 +49,18 @@ namespace Basket_Store_MS.Models.Services
                     CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == cp.Products.CategoryId).Name
                 }).ToList()
             }).ToListAsync();
+
+            foreach (var item in carts)
+            {
+                item.TotalCost = GetTotalCost(item);
+            }
+
+            return carts;
         }
 
         public async Task<CartDto> GetCart(int id)
         {
-            return await _context.Carts.Select(cart => new CartDto
+            CartDto cart =  await _context.Carts.Select(cart => new CartDto
             {
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
@@ -69,6 +76,10 @@ namespace Basket_Store_MS.Models.Services
                     CategoryName = _context.Categories.FirstOrDefault(cat => cat.Id == cp.Products.CategoryId).Name
                 }).ToList()
             }).FirstOrDefaultAsync(c => c.Id == id);
+
+            cart.TotalCost = GetTotalCost(cart);
+
+            return cart;
         }
 
         public async Task<CartDto> UpdateCart(int id, Cart cart)
@@ -146,6 +157,16 @@ namespace Basket_Store_MS.Models.Services
                     await _context.SaveChangesAsync();
                 }
             }
+        }
+
+        private double GetTotalCost(CartDto cart)
+        {
+            double totalCost = 0;
+            foreach (var item in cart.Products)
+            {
+                totalCost += item.Price;
+            }
+            return totalCost;
         }
     }
 }

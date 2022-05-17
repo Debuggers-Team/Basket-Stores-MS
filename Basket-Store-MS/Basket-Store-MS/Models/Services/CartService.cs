@@ -52,7 +52,11 @@ namespace Basket_Store_MS.Models.Services
 
             foreach (var item in carts)
             {
-                item.TotalCost = GetTotalCost(item);
+                item.TotalCost = ReturnTotalCost(item);
+            }
+            foreach (var item in carts)
+            {
+                item.TotalQuantity = GetProductQuantity(item);
             }
 
             return carts;
@@ -60,7 +64,7 @@ namespace Basket_Store_MS.Models.Services
 
         public async Task<CartDto> GetCart(int id)
         {
-            CartDto cart =  await _context.Carts.Select(cart => new CartDto
+            CartDto cart = await _context.Carts.Select(cart => new CartDto
             {
                 Id = cart.Id,
                 TotalCost = cart.TotalCost,
@@ -77,8 +81,8 @@ namespace Basket_Store_MS.Models.Services
                 }).ToList()
             }).FirstOrDefaultAsync(c => c.Id == id);
 
-            cart.TotalCost = GetTotalCost(cart);
-
+            cart.TotalCost = ReturnTotalCost(cart);
+            cart.TotalQuantity = GetProductQuantity(cart);
             return cart;
         }
 
@@ -159,14 +163,41 @@ namespace Basket_Store_MS.Models.Services
             }
         }
 
-        private double GetTotalCost(CartDto cart)
+        private double ReturnTotalCost(CartDto cart)
         {
-            double totalCost = 0;
+
+            double Total = 0;
             foreach (var item in cart.Products)
             {
-                totalCost += item.Price;
+                Total += item.Price;
             }
-            return totalCost;
+
+            return TotalCostAfterDiscount(Total, cart);
+        }
+        private double TotalCostAfterDiscount(double TotalCost, CartDto cart)
+        {
+            if (TotalCost >= 100)
+            {
+
+                TotalCost = TotalCost - (TotalCost * .10);
+
+                return TotalCost;
+            }
+            else
+            {
+                return TotalCost;
+            }
+        }
+
+        private int GetProductQuantity(CartDto cart)
+        {
+            int TotalQuantity = 0;
+            foreach (var item in cart.Products)
+            {
+                TotalQuantity += 1;
+            }
+
+            return TotalQuantity;
         }
     }
 }

@@ -48,6 +48,7 @@ namespace Basket_Store_MS
             services.AddTransient<IFeedBack, FeedBackServices>();
             services.AddTransient<IProuduct, ProuductServices>();
             services.AddTransient<ICategory, CategoryServiece>();
+            services.AddTransient<IFavourite, FavouriteService>();
             services.AddTransient<IUserService, IdentityUserService>();
 
             services.AddControllers()

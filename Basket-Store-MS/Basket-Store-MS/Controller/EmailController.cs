@@ -24,7 +24,7 @@ namespace Basket_Store_MS.Controller
         {
             BillDto bill = await _cart.GetBill(id);
 
-            string billDetails = $"Hi  {bill.UserName}  Your product : {bill.Products}  Total Quantity is : {bill.TotalQuantity}  Total cost is : {bill.TotalCost}";
+            string billDetails = $"Hi  {bill.UserName} ----------  Your product is  {bill.Products}---- Items Quantity is : {bill.TotalQuantity} ----------  Total cost is : {bill.TotalCost}";
 
             MailRequest request = new MailRequest
             {

@@ -215,10 +215,11 @@ namespace Basket_Store_MS.Models.Services
             string Email = await _context.Users.Where(ur => ur.Id == cart.UserId).Select(u => u.Email).FirstOrDefaultAsync();
 
             string products = "";
-
+            int count = 0;
             foreach (var item in cart.Products)
             {
-                products += $"Name item : {item.Name} Price is :  {item.Price}";
+                count++;
+                products += $" {count} . {item.Name} --- Price : {item.Price} ---";
             }
 
             BillDto bill = new BillDto

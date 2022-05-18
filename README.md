@@ -60,52 +60,88 @@ Estimated Time : 1 Day
 
 Basket ER digram 
 
-![Basket ER digram](./img/NewERDAfterEditing.png)
+![Basket ER digram](./img/ERD.png)
 
 Product Table: 
 
 - Have a primary key, and it has the fields of name, Price,InStock, description, and discount. Relationship is (many-to-one) with the  table Category, 
-- And (one to many) with the table Cart
-- And (one to many) with the FeedBack table
-- And(many to many) with Users table by use join table User-Prouduct.
+
+- Relationship:
+
+- one to many with the table Cart
+
+- one to many with the FeedBack table
 
 Category Table: 
 
 - Have a primary key, and it has the fields of name,
-- Relationship is (one-to-many) with the table Product.
+
+- Relationship:
+
+-  is (one-to-many) with the table Product.
 
 User Table :
 
-- Have a Primary key , and it has filds of name,Email, Password,Address,Phone number , role.
+- Have a Primary key , and it has filds of username,Email, Password,Phone number.
 
-Relationship :
-- one to many relaton with payment table .
-- one to many relation with cart table.
-- one to many relation with bills table.
+- Relationship :
+
+- one to one relation with cart table.
+
 - one to many relation with feedback table.
-- many to many relation with product table.
 
 Payment Table: 
 
-- Have a Primary key, and it has fields of Amount, and payment type.
+- Have a Primary key, and it has fields of payment type.
 
-- Relationship : a many to one relation with the users table.
+- Relationship : 
+
+- a one to one relation with the cart table.
 
 Cart Table :
 
-- Is a join table with product and user table, has a primary key, and it has the fields of Total Coast and quantity. 
-- The relationship is (many-to-many) .
+- Have a primary key, and it has the fields of TotalCost,State and Totalquantity. 
+
+- Relationship:
+
+- one to one with users table.
+
+- one to one with paymenttype table.
+
+- many to many with products
 
 Feeback table: 
 
-- Join Table, have a Id as primary key , and it has the fields of UserId, ProductId, description.
-- Relationship is (many-to-one) with 
-- Users Table and (many-to-one) with Products table
+- Join Table, have a Id as primary key , and it has the fields of UserId, ProductId, description,rating.
 
-User-Product table: 
+- Relationship:
 
-- Join Table, have UserId an ProductId as forign keys. 
-- Relationship is (many-to-one) with 
-- Products Table and (many-to-one) with Users table
+- many-to-one with Users Table
 
+- many-to-one with Products table
 
+CartProduct table: 
+
+- Join Table, have CartId an ProductId as forign keys, quantity. 
+
+- Relationship:
+
+- many-to-one with Products Table
+
+- many-to-one with Cart table
+
+FavouriteProduct table: 
+
+- Join Table, have FavouriteId an ProductId as forign keys, quantity. 
+
+- Relationship:
+
+- many-to-one with Products Table
+
+- many-to-one with Favourite table
+
+Favourite: Have a primary Key, and it has the fields of User
+
+- Relationship:
+
+- many-to-one with FavouriteProduct table

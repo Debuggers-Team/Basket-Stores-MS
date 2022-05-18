@@ -39,6 +39,7 @@ namespace Basket_Store_MS.Models.Services
                 TotalCost = cart.TotalCost,
                 State = cart.State,
                 TotalQuantity = cart.TotalQuantity,
+                UserId = cart.UserId,
                 Products = cart.CartProducts.Select(cp => new ProductDto
                 {
                     Id = cp.Products.Id,
@@ -59,6 +60,8 @@ namespace Basket_Store_MS.Models.Services
                 item.TotalQuantity = GetProductQuantity(item);
             }
 
+            await _context.SaveChangesAsync();
+
             return carts;
         }
 
@@ -70,6 +73,7 @@ namespace Basket_Store_MS.Models.Services
                 TotalCost = cart.TotalCost,
                 State = cart.State,
                 TotalQuantity = cart.TotalQuantity,
+                UserId = cart.UserId,
                 Products = cart.CartProducts.Select(cp => new ProductDto
                 {
                     Id = cp.Products.Id,
@@ -83,6 +87,9 @@ namespace Basket_Store_MS.Models.Services
 
             cart.TotalCost = ReturnTotalCost(cart);
             cart.TotalQuantity = GetProductQuantity(cart);
+
+            await _context.SaveChangesAsync();
+
             return cart;
         }
 
@@ -172,14 +179,13 @@ namespace Basket_Store_MS.Models.Services
                 Total += item.Price;
             }
 
-            return TotalCostAfterDiscount(Total, cart);
+            return TotalCostAfterDiscount(Total);
         }
-        private double TotalCostAfterDiscount(double TotalCost, CartDto cart)
+        private double TotalCostAfterDiscount(double TotalCost)
         {
             if (TotalCost >= 100)
             {
-
-                TotalCost = TotalCost - (TotalCost * .10);
+                TotalCost -= (TotalCost * .10);
 
                 return TotalCost;
             }
@@ -192,12 +198,38 @@ namespace Basket_Store_MS.Models.Services
         private int GetProductQuantity(CartDto cart)
         {
             int TotalQuantity = 0;
+
+            List<int> cartProduct = _context.CartProduct.Where(cp => cp.CartId == cart.Id).Select(q => q.Quantity).ToList();
+            foreach (var item in cartProduct)
+            {
+                TotalQuantity += item;
+            }
+            return TotalQuantity;
+        }
+
+        public async Task<BillDto> GetBill(int id)
+        {
+            CartDto cart = await GetCart(id);
+
+            string UserName = await _context.Users.Where(ur => ur.Id == cart.UserId).Select(u => u.UserName).FirstOrDefaultAsync();
+            string Email = await _context.Users.Where(ur => ur.Id == cart.UserId).Select(u => u.Email).FirstOrDefaultAsync();
+
+            string products = "";
+
             foreach (var item in cart.Products)
             {
-                TotalQuantity += 1;
+                products += $"Name item : {item.Name} Price is :  {item.Price}";
             }
 
-            return TotalQuantity;
+            BillDto bill = new BillDto
+            {
+                UserName = UserName,
+                TotalCost = cart.TotalCost,
+                TotalQuantity =cart.TotalQuantity,
+                Products = products
+            };
+
+            return bill;
         }
     }
 }

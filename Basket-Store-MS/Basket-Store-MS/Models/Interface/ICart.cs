@@ -13,5 +13,7 @@ namespace Basket_Store_MS.Models.Interface
         Task Delete(int id);
         Task AddProductToCart(int productId, int cartId);
         Task RemoveProductFromCart(int productId, int cartId);
+        Task<BillDto> GetBill(int id);
+
     }
 }

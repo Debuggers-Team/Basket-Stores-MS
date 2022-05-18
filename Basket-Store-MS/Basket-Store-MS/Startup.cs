@@ -4,7 +4,7 @@ using Basket_Store_MS.Data;
 using Basket_Store_MS.Models;
 using Basket_Store_MS.Models.Interface;
 using Basket_Store_MS.Models.Services;
-
+using Basket_Store_MS.Models.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -51,6 +51,9 @@ namespace Basket_Store_MS
             services.AddTransient<IFavourite, FavouriteService>();
             services.AddTransient<IUserService, IdentityUserService>();
 
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService,MailService>();
+
             services.AddControllers()
                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -65,6 +68,11 @@ namespace Basket_Store_MS
                     Version = "v1",
                 });
             });
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -73,7 +81,12 @@ namespace Basket_Store_MS
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseAuthorization();
+
             app.UseSwagger(options => {
                 options.RouteTemplate = "/api/{documentName}/swagger.json";
             });

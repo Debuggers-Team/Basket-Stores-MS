@@ -42,24 +42,19 @@ from this point and because we belive that selling and buying is part and parcel
 1. As a new user, I want to register by creating a username and password so that the system can remember me and my data,
 I should have a valid username and password to meet validation rules by the web application, and keep trying to fix register issues if occur until all validations take place.
 
-Estimated Time : 1 Day
 
 2. As a registered user, I want to be able to securely log in to the system so that my information can only be accessed by me.
 the system can authenticate me and I can trust it.
 
-Estimated Time : 1 Day
 
 3. As a registered user, I want to be able to occasionally change my password so that I can keep it secure. and to be able to request a new password so that I don't permanently lose access to my data if I forget it.
 
-Estimated Time : 1 Day
 
 4. As a registered user, I need to search for products, so that I can find the ones I want to buy and pass them to my cart, and be able to add feedback.
 
-Estimated Time : 1 Day
 
 5. As an administrative user, I want to be able to show all users and their orders, so that I can know the status of each product
 
-Estimated Time : 1 Day
 
 
 ## Domain Modeling
@@ -185,3 +180,5 @@ when user explore products he/she can have multiple ways to browse it like:  ord
 
 8- Testing
 We use a unit tasting in our project by test some functions such as the function that responsible to add product to cart.
+
+9- Send Bill details to the User Email.

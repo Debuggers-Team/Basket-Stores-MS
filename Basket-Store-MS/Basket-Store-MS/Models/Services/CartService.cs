@@ -40,6 +40,7 @@ namespace Basket_Store_MS.Models.Services
                 State = cart.State,
                 TotalQuantity = cart.TotalQuantity,
                 UserId = cart.UserId,
+                TotalCostDicount = 0,
                 Products = cart.CartProducts.Select(cp => new ProductDto
                 {
                     Id = cp.Products.Id,
@@ -54,7 +55,12 @@ namespace Basket_Store_MS.Models.Services
             foreach (var item in carts)
             {
                 item.TotalCost = ReturnTotalCost(item);
+                if (item.TotalCost >= 100)
+                {
+                    item.TotalCostDicount = TotalCostAfterDiscount(item.TotalCost);
+                }
             }
+
             foreach (var item in carts)
             {
                 item.TotalQuantity = GetProductQuantity(item);
@@ -74,6 +80,7 @@ namespace Basket_Store_MS.Models.Services
                 State = cart.State,
                 TotalQuantity = cart.TotalQuantity,
                 UserId = cart.UserId,
+                TotalCostDicount = 0,
                 Products = cart.CartProducts.Select(cp => new ProductDto
                 {
                     Id = cp.Products.Id,
@@ -86,6 +93,10 @@ namespace Basket_Store_MS.Models.Services
             }).FirstOrDefaultAsync(c => c.Id == id);
 
             cart.TotalCost = ReturnTotalCost(cart);
+            if (cart.TotalCost >= 100)
+            {
+                cart.TotalCostDicount = TotalCostAfterDiscount(cart.TotalCost);
+            }
             cart.TotalQuantity = GetProductQuantity(cart);
 
             await _context.SaveChangesAsync();
@@ -172,27 +183,30 @@ namespace Basket_Store_MS.Models.Services
 
         private double ReturnTotalCost(CartDto cart)
         {
-
-            double Total = 0;
-            foreach (var item in cart.Products)
+            
+            try
             {
-                Total += item.Price;
+                List<int> QuantityList = _context.CartProduct.Where(cp => cp.CartId == cart.Id).Select(q => q.Quantity).ToList();
+                double Total = 0;
+                int count = 0;
+                foreach (var item in cart.Products)
+                {
+                    Total += item.Price * QuantityList[0];
+                    count++;
+                }
+                return Total;
             }
-
-            return TotalCostAfterDiscount(Total);
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         private double TotalCostAfterDiscount(double TotalCost)
         {
-            if (TotalCost >= 100)
-            {
                 TotalCost -= (TotalCost * .10);
 
                 return TotalCost;
-            }
-            else
-            {
-                return TotalCost;
-            }
+            
         }
 
         private int GetProductQuantity(CartDto cart)
@@ -214,20 +228,16 @@ namespace Basket_Store_MS.Models.Services
             string UserName = await _context.Users.Where(ur => ur.Id == cart.UserId).Select(u => u.UserName).FirstOrDefaultAsync();
             string Email = await _context.Users.Where(ur => ur.Id == cart.UserId).Select(u => u.Email).FirstOrDefaultAsync();
 
-            string products = "";
-            int count = 0;
-            foreach (var item in cart.Products)
-            {
-                count++;
-                products += $" {count} . {item.Name} --- Price : {item.Price} ---";
-            }
+            List<int> QuantityList = _context.CartProduct.Where(cp => cp.CartId == cart.Id).Select(q => q.Quantity).ToList();
 
             BillDto bill = new BillDto
             {
                 UserName = UserName,
                 TotalCost = cart.TotalCost,
+                TotalCostDicount = cart.TotalCostDicount,
                 TotalQuantity =cart.TotalQuantity,
-                Products = products
+                Products = cart.Products,
+                Quantity = QuantityList
             };
 
             return bill;

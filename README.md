@@ -182,3 +182,6 @@ when user explore products he/she can have multiple ways to browse it like:  ord
 We use a unit tasting in our project by test some functions such as the function that responsible to add product to cart.
 
 9- Send Bill details to the User Email.
+
+10- Dayile Excel report sheet to Administrator
+The administrator has the ability to create a daily excel report.

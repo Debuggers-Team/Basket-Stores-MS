@@ -232,5 +232,27 @@ namespace Basket_Store_MS.Models.Services
 
             return productDto;
         }
+
+        public async Task<List<ExcelSheet>> GetExcelSheetsData()
+        {
+            List<Products> products = await _context.Products.ToListAsync();
+
+            List<ExcelSheet> excelSheets = new List<ExcelSheet>();
+
+            foreach (var item in products)
+            {
+                ExcelSheet sheet = new ExcelSheet
+                {
+                    No = item.Id,
+                    ProductName = item.Name,
+                    InStock = item.InStock,
+                    Discount = item.Discount
+                };
+
+                excelSheets.Add(sheet);
+            }
+
+            return excelSheets;
+        }
     }
 }

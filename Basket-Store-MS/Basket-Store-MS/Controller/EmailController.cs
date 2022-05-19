@@ -41,8 +41,6 @@ namespace Basket_Store_MS.Controller
                 count++;
             }
 
-            //string billDetails = $"Hi  {bill.UserName} <br> <br> Your product is  {bill.Products} \r Items Quantity is : {bill.TotalQuantity} \n  Total cost is : {bill.TotalCost}";
-
             StringBuilder sb = new StringBuilder();
             //Table start.
             sb.Append($"<p style='font-size:22px ;color:black;font-family:Arial'> Hi {bill.UserName} </p>");
@@ -101,7 +99,6 @@ namespace Basket_Store_MS.Controller
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

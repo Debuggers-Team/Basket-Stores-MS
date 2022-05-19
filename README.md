@@ -164,24 +164,31 @@ consist of user's products that he/she want to buy, each user will have a unique
 user can be able to see products inside his cart, update it, add product to cart so number will increase or delete from it number will be decreased.
 
 3- Category
+
 each product will belong to unique category, so user will be able to see what categories we have, and browse products inside this category, also he/she will see feedback from other user's on same product
 
 4- Favourite 
+
 each user will have a list of favourite products user add it, so he/she will return to it if he/she want to buy same product one more time, or he can just remove product from it in case he don't want it.
 
 5- FeedBack
+
 user can add feedback and rating on product, so other user's can have an overview if they willing to buy this pruct or no.
 
 6- PaymentType
+
 defenitly each cart will have a special payment type to complete shopping.
 
 7- Products
+
 when user explore products he/she can have multiple ways to browse it like:  ordered by (ascending, descending, min To max price and viceversa, from To price), ability to search for a specific product by name and description, we provide a detailed information about it like: name , price, product description , discount if exist, category for this product , feedback for given product
 
 8- Testing
+
 We use a unit tasting in our project by test some functions such as the function that responsible to add product to cart.
 
 9- Send Bill details to the User Email.
 
 10- Dayile Excel report sheet to Administrator
+
 The administrator has the ability to create a daily excel report.
